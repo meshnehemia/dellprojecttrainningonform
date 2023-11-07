@@ -6,7 +6,7 @@
 .register-photo .image-holder {
   display:table-cell;
   width:auto;
-  background:url(../images/register.png);
+  background:url(https://th.bing.com/th/id/OIP.BkrLHnEAQHSVNGCgO-iSgAHaEo?w=267&h=180&c=7&r=0&o=5&pid=1.7);
   background-size:cover;
 }
 
@@ -73,7 +73,6 @@
 .register-photo form .btn-primary:active {
   transform:translateY(1px);
 }
-
 .register-photo form .already {
   display:block;
   text-align:center;
