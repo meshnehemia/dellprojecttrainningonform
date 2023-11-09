@@ -38,14 +38,40 @@
             {{ form.description }}
         </div>
     </div>
+
+     <div class="row mb-3">
+        <div class="col">
+            <label for="name">origin:</label>
+        </div>
+        <div class="col">
+            {{ form.origin }}
+        </div>
+    </div>
+
+     <div class="row mb-3">
+        <div class="col">
+            <label for="name">color:</label>
+        </div>
+        <div class="col">
+            <select name="color" id="color">
+                <option value="" disabled selected>Select color</option>
+                <option value="brown">Brown</option>
+                <option value="black">Black</option>
+            </select>
+        </div>
+    </div>
+
+
     <div class="row mb-3">
         <div class="col">
             <button type="submit" class="btn btn-primary">save</button>
         </div>
         <div class="col">
-            <a href="" class="btn btn-warning">See Products</a>
+            <a href="/show" class="btn btn-warning">See Products</a>
         </div>
     </div>
+
+
 </form>
 
 </body>

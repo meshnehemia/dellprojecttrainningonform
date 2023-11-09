@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from biashara.models import Member
 from biashara.forms import ProductsForm
+from biashara.models import Product
 
 
 # Create your views here.
@@ -67,3 +68,29 @@ def addproducts(request):
     else:
         form = ProductsForm
         return render(request, 'addproduct.html', {'form': form})
+
+
+def show(request):
+    products = Product.objects.all
+    return render(request, 'show.html', {'products': products})
+
+
+def delete(request, id):
+    product = Product.objects.get(id=id)
+    product.delete()
+    return redirect('/show')
+
+
+def edit(request, id):
+    product = Product.objects.get(id=id)
+    return render(request, 'edit.html', {'product': product})
+
+
+def update(request, id):
+    product = Product.objects.get(id=id)
+    form = ProductsForm(request.POST, instance=product)
+    if form.is_valid():
+        form.save()
+        return redirect('/show')
+    else:
+        return render(request, 'edit.html', {'product': product})

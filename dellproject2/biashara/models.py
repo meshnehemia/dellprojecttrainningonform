@@ -18,6 +18,8 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.IntegerField(0)
     description = models.TextField()
+    origin = models.CharField(max_length=50,default="kenya")
+    color = models.CharField(max_length=30,default="white")
 
     def __str__(self):
         return self.name + " " + str(self.price)
