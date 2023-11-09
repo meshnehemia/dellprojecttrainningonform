@@ -1,7 +1,11 @@
+import base64
+
 from django.shortcuts import render, redirect
 from biashara.models import Member
 from biashara.forms import ProductsForm
 from biashara.models import Product
+from biashara.forms import MpesaPaymentForm
+import requests
 
 
 # Create your views here.
@@ -94,3 +98,58 @@ def update(request, id):
         return redirect('/show')
     else:
         return render(request, 'edit.html', {'product': product})
+
+
+def make_payment(request):
+    if request.method == 'POST':
+        form = MpesaPaymentForm(request.POST)
+        if form.is_valid():
+            phone_number = form.cleaned_data['phone_number']
+            amount = float(form.cleaned_data['amount'])
+
+            # Define the M-Pesa API endpoint and authentication credentials
+            api_url = 'https://mydomain.com/path'  # Replace with the actual API endpoint
+            consumer_key = 'OIAq5GGl6Gdl3ZwTJg8MwqLhG1y4PJPm'
+            consumer_secret = 'IVouUUah8FgzKpG2'
+
+            # Set up the request headers and payload
+            # Set up the request headers and payload
+            headers = {
+                'Authorization': f'Basic {base64.b64encode(f"{consumer_key}:{consumer_secret}".encode()).decode()}',
+                'Content-Type': 'application/json',
+            }
+
+            payload = {
+                'phone_number': phone_number,
+                'amount': amount,
+                "BusinessShortCode": "174379",
+                "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMTYwMjE2MTY1NjI3",
+                "TransactionType": "CustomerPayBillOnline",
+                "AccountReference": "Glory",
+                "TransactionDesc": "Product"
+
+                # Add any other required parameters according to the API documentation
+            }
+
+            # Make the API call
+            response = requests.post(api_url, headers=headers, json=payload)
+
+            if response.status_code == 200:
+                # Payment was successful
+                return render(request, 'success.html')
+            else:
+                # Payment failed, handle the error
+                error_message = response.json().get('error_message')
+                return render(request, 'error.html', {'error_message': error_message})
+    else:
+        form = MpesaPaymentForm()
+
+    return render(request, 'pay.html', {'form': form})
+
+
+def success(request):
+    return render(request, 'success.html')
+
+
+def error(request):
+    return render(request, 'error.html')
